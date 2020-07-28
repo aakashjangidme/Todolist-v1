@@ -2,27 +2,77 @@
 
 const express = require("express");
 const bodyParser = require("body-parser");
-const date = require(__dirname + "/date.js");
+const mongoose = require("mongoose");
 
 const app = express();
 
 app.set('view engine', 'ejs');
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.urlencoded({
+  extended: true
+}));
 app.use(express.static("public"));
 
-const items = ["Buy Food", "Cook Food", "Eat Food"];
-const workItems = [];
+
+//create new dB,
+mongoose.connect("mongodb://localhost:27017/todolistDB", {
+  useNewUrlParser: true
+});
+// const items = ["Buy Food", "Cook Food", "Eat Food"];
+// const workItems = [];
+// //schema
+const itemsSchema = {
+  name: String
+};
+const Item = mongoose.model("Item", itemsSchema);
+//add items
+const item1 = new Item({
+  name: "Welcome to your todolist!!!"
+});
+
+const item2 = new Item({
+  name: "Hit the + button to add items !!!"
+});
+
+const defaultItems = [item1, item2];
+//insert into db
+
+
+
 
 app.get("/", function(req, res) {
 
-const day = date.getDate();
+  Item.find({}, function(err, foundItems) {
+    if (foundItems.length === 0) {
+      Item.insertMany(defaultItems, function(err) {
+        if (err) {
+          console.log(err);
 
-  res.render("list", {listTitle: day, newListItems: items});
+        } else {
+          console.log('done ...!!');
+        };
+      });
+      res.redirect('/');
+    } else {
+      //get items
+      if (err) {
+        console.log(error);
+      } else {
+        //pass items from db to newListitem
+        res.render("list", {
+          listTitle: "Today",
+          newListItems: foundItems
+        });
+      }
+    }
+
+  });
+
 
 });
 
-app.post("/", function(req, res){
+app.post("/", function(req, res) {
+
 
   const item = req.body.newItem;
 
@@ -35,11 +85,14 @@ app.post("/", function(req, res){
   }
 });
 
-app.get("/work", function(req,res){
-  res.render("list", {listTitle: "Work List", newListItems: workItems});
+app.get("/work", function(req, res) {
+  res.render("list", {
+    listTitle: "Work List",
+    newListItems: workItems
+  });
 });
 
-app.get("/about", function(req, res){
+app.get("/about", function(req, res) {
   res.render("about");
 });
 
