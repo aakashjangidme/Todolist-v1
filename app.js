@@ -16,7 +16,7 @@ app.use(express.static("public"));
 
 
 //create new dB,
-mongoose.connect("mongodb://localhost:27017/todolistDB", {
+mongoose.connect("mongodb+srv://aakash-admin:skyyjaan@cluster0.xbhj9.mongodb.net/todolistDB", {
   useNewUrlParser: true
 });
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
