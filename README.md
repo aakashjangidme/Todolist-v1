@@ -6,5 +6,5 @@
 https://floating-stream-01567.herokuapp.com/ - automatic!
 [HerokuApp](https://floating-stream-01567.herokuapp.com/)
 
-![GitHub Logo](/images/logo.png)
+![GitHub Logo](/images/logo.PNG)
 Format: ![Alt Text](TodoList)
