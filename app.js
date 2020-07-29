@@ -4,6 +4,7 @@ const express = require("express");
 const bodyParser = require("body-parser");
 const mongoose = require("mongoose");
 const _ = require("lodash");
+require('dotenv').config();
 
 const app = express();
 
@@ -16,7 +17,9 @@ app.use(express.static("public"));
 
 
 //create new dB,
-mongoose.connect("mongodb+srv://aakash-admin:skyyjaan@cluster0.xbhj9.mongodb.net/todolistDB", {
+const uri = `mongodb+srv://aakash-admin:${process.env.mongo_pass}@cluster0.xbhj9.mongodb.net/todolistDB`;
+// console.log("here",process.env.mongo_pass);
+mongoose.connect(uri, {
   useNewUrlParser: true
 });
 // const items = ["Buy Food", "Cook Food", "Eat Food"];
